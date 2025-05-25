@@ -10,6 +10,7 @@ import 'package:self_portfolio/presentation/experinece_card.dart';
 import 'package:self_portfolio/presentation/project_card.dart';
 import 'package:self_portfolio/utils/appbar.dart';
 import 'package:self_portfolio/utils/spacer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MobileViewPortfolio extends StatefulWidget {
   const MobileViewPortfolio({super.key});
@@ -84,7 +85,15 @@ class _MobileViewPortfolioState extends State<MobileViewPortfolio> {
   );
 
   Widget get resumeDownloadButton => OutlinedButton(
-    onPressed: () {},
+    onPressed: () async {
+    final Uri resumeUrl = Uri.parse('https://drive.google.com/file/d/1aiQYqSlAUFNoOpZ28sN6qBloY2I3bbY1/view?usp=drive_link'); // Replace with your actual PDF URL
+
+    if (await canLaunchUrl(resumeUrl)) {
+      await launchUrl(resumeUrl, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $resumeUrl';
+    }
+  },
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: const [

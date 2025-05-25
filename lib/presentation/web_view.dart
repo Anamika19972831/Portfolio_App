@@ -9,6 +9,7 @@ import 'package:self_portfolio/presentation/experinece_card.dart';
 import 'package:self_portfolio/presentation/project_card.dart';
 import 'package:self_portfolio/utils/appbar.dart';
 import 'package:self_portfolio/utils/spacer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class WebViewPortfolio extends StatefulWidget {
   const WebViewPortfolio({super.key});
@@ -126,26 +127,34 @@ class _WebViewPortfolioState extends State<WebViewPortfolio> {
   );
 
   // Resume donwload button
-  Widget get resumeDownloadButton => OutlinedButton(
-    onPressed: () {},
-    style: ElevatedButton.styleFrom(
-      shadowColor: AppColors.mutedText,
-      surfaceTintColor: AppColors.primary,
-      fixedSize: Size(150, 40),
-      shape: RoundedRectangleBorder(
-        side: BorderSide(color: AppColors.primary),
-        borderRadius: BorderRadiusGeometry.circular(10),
-      ),
+Widget get resumeDownloadButton => OutlinedButton(
+  onPressed: () async {
+    final Uri resumeUrl = Uri.parse('https://drive.google.com/file/d/1aiQYqSlAUFNoOpZ28sN6qBloY2I3bbY1/view?usp=drive_link'); // Replace with your actual PDF URL
+
+    if (await canLaunchUrl(resumeUrl)) {
+      await launchUrl(resumeUrl, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $resumeUrl';
+    }
+  },
+  style: OutlinedButton.styleFrom(
+    side: BorderSide(color: AppColors.primary),
+    fixedSize: const Size(150, 40),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
     ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.download, color: AppColors.text),
-        Space.show(width: 20),
-        Text("Resume", style: TextStyle(color: AppColors.text)),
-      ],
-    ),
-  );
+  ),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Icon(Icons.download, color: AppColors.text),
+      const SizedBox(width: 20),
+      Text("Resume", style: TextStyle(color: AppColors.text)),
+    ],
+  ),
+);
+
+
 
   // Social media contact information
   // Widget get socialConatctInfo => Row(
